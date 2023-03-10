@@ -1,6 +1,6 @@
 import "./category-container.styles.scss";
 
-const CategoriesContainer = ({ category }) => {
+const CategoriesList = ({ category }) => {
 	return (
 		<div className="category-container">
 			<div
@@ -17,4 +17,4 @@ const CategoriesContainer = ({ category }) => {
 	);
 };
 
-export default CategoriesContainer;
+export default CategoriesList;
