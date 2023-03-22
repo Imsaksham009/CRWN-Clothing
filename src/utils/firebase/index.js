@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -22,39 +22,21 @@ const auth = getAuth(app);
 //firestore db
 const db = getFirestore(app);
 
-// export const createPerson = async () => {
-//     try {
-//         const docRef = await addDoc(collection(db, "persons"), {
-//             first: "Saksham",
-//             middle: "",
-//             last: "Gupta",
-//             born: 2000
-//         });
-
-//         console.log("Document written with ID: ", docRef.id);
-//     } catch (e) {
-//         console.error("Error adding document: ", e);
-//     }
-// };
-
-
 
 
 export const signInWithGooglePopUp = () => signInWithPopup(auth, provider).then(async (result) => {
-    try {
-        const docRef = await addDoc(collection(db, "persons"), {
-            first: "Saksham",
-            middle: "",
-            last: "Gupta",
-            born: 2000
+
+    const docRefFromAuth = doc(db, "users", result.user.uid);
+    const docSnap = await getDoc(docRefFromAuth);
+    if (docSnap.exists()) {
+        console.log(docSnap.data());
+    } else {
+        await setDoc(docRefFromAuth, {
+            name: result.user.displayName,
+            email: result.user.email,
+            isVerified: result.user.emailVerified
         });
-
-        console.log("Document written with ID: ", docRef.id);
-        console.log(result);
-    } catch (e) {
-        console.error("Error adding document: ", e);
     }
-
 });
 
 
