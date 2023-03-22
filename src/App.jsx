@@ -1,27 +1,32 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
+} from "react-router-dom";
 import ErrorPage from "./Routes/Error/ErrorPage.components.jsx";
 import Home from "./Routes/Home/home.component.jsx";
+import Nav from "./Routes/Nav/nav.component.jsx";
+import SignIn from "./Routes/Sign-In/sign-in.component.jsx";
 
 const Shop = () => {
 	return (
 		<div>
-			<h1>This is the Shop Page</h1>
+			<h1>I am a shop</h1>
 		</div>
 	);
 };
 
-const routes = createBrowserRouter([
-	{
-		path: "/home",
-		element: <Home />,
-		children: [
-			{
-				path: "shop",
-				element: <Shop />,
-			},
-		],
-	},
-]);
+const routes = createBrowserRouter(
+	createRoutesFromElements(
+		<Route path="/" element={<Nav />}>
+			<Route index element={<Home />} />
+			<Route path="shop" element={<Shop />} />
+			<Route path="sign-in" element={<SignIn />} />
+			<Route path="*" element={<ErrorPage />} />
+		</Route>
+	)
+);
 
 const App = () => {
 	return <RouterProvider router={routes} />;
