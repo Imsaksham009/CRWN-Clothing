@@ -19,3 +19,5 @@ const auth = getAuth(app);
 
 
 export const signInWithGooglePopUp = () => signInWithPopup(auth, provider);
+
+
