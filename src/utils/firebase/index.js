@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -16,27 +16,35 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 const auth = getAuth(app);
 
 //firestore db
 const db = getFirestore(app);
 
+export const signInWithGooglePopUp = () => signInWithPopup(auth, googleProvider);
+
+export const signInWithEmail = async (email, password) => {
+    if (!email || !password) return;
+
+    const userAuth = await createUserWithEmailAndPassword(auth, email, password);
+    return userAuth;
+};
 
 
-export const signInWithGooglePopUp = () => signInWithPopup(auth, provider).then(async (result) => {
-
-    const docRefFromAuth = doc(db, "users", result.user.uid);
+export const createUser = async (user) => {
+    const docRefFromAuth = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRefFromAuth);
     if (docSnap.exists()) {
-        console.log(docSnap.data());
+        return docRefFromAuth;
     } else {
+        const { displayName, email } = user;
+        const createdAt = new Date();
         await setDoc(docRefFromAuth, {
-            name: result.user.displayName,
-            email: result.user.email,
-            isVerified: result.user.emailVerified
+            displayName,
+            email,
+            createdAt
         });
     }
-});
-
-
+    return docRefFromAuth;
+};
