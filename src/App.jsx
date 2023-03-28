@@ -7,7 +7,7 @@ import {
 import ErrorPage from "./Routes/Error/ErrorPage.components.jsx";
 import Home from "./Routes/Home/home.component.jsx";
 import Nav from "./Routes/Nav/nav.component.jsx";
-import SignIn from "./Routes/Sign-In/sign-in.component.jsx";
+import SignIn from "./Routes/User-logging/user-logging.component.jsx";
 
 const Shop = () => {
 	return (

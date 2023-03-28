@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createUser, signInWithEmail } from "../../utils/firebase";
+import FormInput from "../form-input/form-input.component";
 
 const SignUp = () => {
 	const [formFields, setFormFields] = useState({
@@ -25,14 +26,20 @@ const SignUp = () => {
 		const { user } = await signInWithEmail(email, password, displayName);
 		user.displayName = displayName;
 		await createUser(user);
+		setFormFields({
+			displayName: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+		});
 	};
 
 	return (
 		<div>
 			<h1>Sign-Up</h1>
 			<form onSubmit={handleSubmit}>
-				<label htmlFor="displayName">Full Name:</label>
-				<input
+				<FormInput
+					label={{ for: "displayName", name: "Display Name:" }}
 					type="text"
 					id="displayName"
 					name="displayName"
@@ -40,8 +47,11 @@ const SignUp = () => {
 					value={displayName}
 					required
 				/>
-				<label htmlFor="email">Email:</label>
-				<input
+				<FormInput
+					label={{
+						for: "email",
+						name: "E-mail:",
+					}}
 					type="email"
 					id="email"
 					name="email"
@@ -49,8 +59,11 @@ const SignUp = () => {
 					value={email}
 					required
 				/>
-				<label htmlFor="password">Password:</label>
-				<input
+				<FormInput
+					label={{
+						for: "password",
+						name: "Password:",
+					}}
 					type="password"
 					id="password"
 					name="password"
@@ -58,8 +71,11 @@ const SignUp = () => {
 					value={password}
 					required
 				/>
-				<label htmlFor="confirmPassword">Confirm Password:</label>
-				<input
+				<FormInput
+					label={{
+						for: "confirmPassword",
+						name: "Confirm Password:",
+					}}
 					type="password"
 					id="confirmPassword"
 					name="confirmPassword"
