@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { signInWithGooglePopUp, createUser } from "../../utils/firebase";
+import {
+	signInWithGooglePopUp,
+	createUser,
+	signInWithEmail,
+} from "../../utils/firebase";
 import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
+import "./sign-in.style.scss";
 
 const SignIn = () => {
 	const [formFields, setFormFields] = useState({
@@ -18,14 +23,21 @@ const SignIn = () => {
 	};
 	const { email, password } = formFields;
 
+	const handleEmailLogin = async () => {
+		const user = await signInWithEmail(email, password);
+		setFormFields({ email: "", password: "" });
+		console.log(user);
+	};
+
 	return (
-		<div>
-			<h1>Sign-In</h1>
+		<div className="sign-up-container">
+			<h2>Already have an Account?</h2>
+			<span>Sign in with your email and password</span>
 
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					console.log(formFields);
+					handleEmailLogin();
 				}}
 			>
 				<FormInput
@@ -52,12 +64,14 @@ const SignIn = () => {
 					value={password}
 					required
 				/>
-				<Button type="submit" name="Sign-In" />
-				<Button
-					classname="google-sign-in"
-					onClick={logGoogleUser}
-					name="Google Sign-In"
-				/>
+				<div className="buttons-container">
+					<Button type="submit" name="Sign-In" />
+					<Button
+						classname="google-sign-in"
+						onClick={logGoogleUser}
+						name="Google Sign-In"
+					/>
+				</div>
 			</form>
 		</div>
 	);

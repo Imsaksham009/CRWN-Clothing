@@ -7,7 +7,7 @@ import {
 import ErrorPage from "./Routes/Error/ErrorPage.components.jsx";
 import Home from "./Routes/Home/home.component.jsx";
 import Nav from "./Routes/Nav/nav.component.jsx";
-import SignIn from "./Routes/User-logging/user-logging.component.jsx";
+import SignIn from "./Routes/Auth/user-logging.component.jsx";
 
 const Shop = () => {
 	return (
@@ -22,7 +22,7 @@ const routes = createBrowserRouter(
 		<Route path="/" element={<Nav />}>
 			<Route index element={<Home />} />
 			<Route path="shop" element={<Shop />} />
-			<Route path="sign-in" element={<SignIn />} />
+			<Route path="auth" element={<SignIn />} />
 			<Route path="*" element={<ErrorPage />} />
 		</Route>
 	)

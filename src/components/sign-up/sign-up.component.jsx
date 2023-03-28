@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { createUser, signInWithEmail } from "../../utils/firebase";
+import { createUser, signUpWithEmail } from "../../utils/firebase";
 import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
-
+import "./sign-up.style.scss";
 const SignUp = () => {
 	const [formFields, setFormFields] = useState({
 		displayName: "",
@@ -24,7 +24,7 @@ const SignUp = () => {
 			alert("Passwords do not match");
 			return;
 		}
-		const { user } = await signInWithEmail(email, password, displayName);
+		const { user } = await signUpWithEmail(email, password, displayName);
 		user.displayName = displayName;
 		await createUser(user);
 		setFormFields({
@@ -36,8 +36,10 @@ const SignUp = () => {
 	};
 
 	return (
-		<div>
-			<h1>Sign-Up</h1>
+		<div className="sign-up-container">
+			<h2>Don't have an Account?</h2>
+			<span>Sign up with your email and password</span>
+
 			<form onSubmit={handleSubmit}>
 				<FormInput
 					label={{ for: "displayName", name: "Display Name:" }}
