@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { signInWithGooglePopUp, createUser } from "../../utils/firebase";
+import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
 
 const SignIn = () => {
@@ -51,8 +52,12 @@ const SignIn = () => {
 					value={password}
 					required
 				/>
-				<button type="submit">Sign-In</button>
-				<button onClick={logGoogleUser}> Google Sign-In </button>
+				<Button type="submit" name="Sign-In" />
+				<Button
+					classname="google-sign-in"
+					onClick={logGoogleUser}
+					name="Google Sign-In"
+				/>
 			</form>
 		</div>
 	);
