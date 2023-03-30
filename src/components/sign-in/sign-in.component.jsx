@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
 	signInWithGooglePopUp,
 	createUser,
@@ -6,9 +6,12 @@ import {
 } from "../../utils/firebase";
 import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
+
+import { UserContext } from "../../contexts/user.context";
 import "./sign-in.style.scss";
 
 const SignIn = () => {
+	const { setCurrentUser } = useContext(UserContext);
 	const [formFields, setFormFields] = useState({
 		email: "",
 		password: "",
@@ -25,8 +28,9 @@ const SignIn = () => {
 
 	const handleEmailLogin = async () => {
 		const user = await signInWithEmail(email, password);
+
 		setFormFields({ email: "", password: "" });
-		console.log(user);
+		setCurrentUser(user);
 	};
 
 	return (
@@ -67,6 +71,7 @@ const SignIn = () => {
 				<div className="buttons-container">
 					<Button type="submit" name="Sign-In" />
 					<Button
+						type="button"
 						classname="google-sign-in"
 						onClick={logGoogleUser}
 						name="Google Sign-In"

@@ -6,7 +6,6 @@ const UserLogging = () => {
 	return (
 		<div className="authentication-container">
 			<SignIn />
-			<br />
 			<SignUp />
 		</div>
 	);
