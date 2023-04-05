@@ -4,15 +4,16 @@ import {
     GoogleAuthProvider,
     signInWithPopup, createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    updateProfile,
-    signOut
+    signOut,
+    onAuthStateChanged
 } from "firebase/auth";
 
 import {
     getFirestore,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    updateDoc
 } from "firebase/firestore";
 
 
@@ -36,12 +37,10 @@ const db = getFirestore(app);
 
 export const signInWithGooglePopUp = () => signInWithPopup(auth, googleProvider);
 
-export const signUpWithEmail = async (email, password, displayName) => {
+export const signUpWithEmail = async (email, password) => {
     if (!email || !password) return;
 
     const userAuth = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(auth.currentUser, { displayName });
-
     return userAuth;
 };
 
@@ -57,7 +56,7 @@ export const signInWithEmail = async (email, password) => {
 };
 
 
-export const createUser = async (user) => {
+export const createUser = async (user, dispName = "") => {
     const docRefFromAuth = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRefFromAuth);
     if (docSnap.exists()) {
@@ -70,9 +69,15 @@ export const createUser = async (user) => {
             email,
             createdAt
         });
+        if (!displayName) {
+            await updateDoc(docRefFromAuth, { displayName: dispName });
+        }
     }
     return docRefFromAuth;
 };
 
 
 export const signOutUser = async () => await signOut(auth);
+
+
+export const onAuthStateChangeByUser = (callback) => onAuthStateChanged(auth, callback);

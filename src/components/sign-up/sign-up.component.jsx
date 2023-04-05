@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { createUser, signUpWithEmail } from "../../utils/firebase";
 import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
-import { UserContext } from "../../contexts/user.context";
 import "./sign-up.style.scss";
 const SignUp = () => {
-	const { setCurrentUser } = useContext(UserContext);
 	const [formFields, setFormFields] = useState({
 		displayName: "",
 		email: "",
@@ -26,9 +24,8 @@ const SignUp = () => {
 			alert("Passwords do not match");
 			return;
 		}
-		const { user } = await signUpWithEmail(email, password, displayName);
-		setCurrentUser(user);
-		await createUser(user);
+		const { user } = await signUpWithEmail(email, password);
+		await createUser(user, displayName);
 		setFormFields({
 			displayName: "",
 			email: "",

@@ -1,17 +1,11 @@
-import { useState, useContext } from "react";
-import {
-	signInWithGooglePopUp,
-	createUser,
-	signInWithEmail,
-} from "../../utils/firebase";
+import { useState } from "react";
+import { signInWithGooglePopUp, signInWithEmail } from "../../utils/firebase";
 import Button from "../button-component/button.component";
 import FormInput from "../form-input/form-input.component";
 
-import { UserContext } from "../../contexts/user.context";
 import "./sign-in.style.scss";
 
 const SignIn = () => {
-	const { setCurrentUser } = useContext(UserContext);
 	const [formFields, setFormFields] = useState({
 		email: "",
 		password: "",
@@ -21,16 +15,20 @@ const SignIn = () => {
 		setFormFields({ ...formFields, [name]: value });
 	};
 	const logGoogleUser = async () => {
-		const { user } = await signInWithGooglePopUp();
-		await createUser(user);
+		await signInWithGooglePopUp();
 	};
 	const { email, password } = formFields;
 
 	const handleEmailLogin = async () => {
 		const user = await signInWithEmail(email, password);
-
-		setFormFields({ email: "", password: "" });
-		setCurrentUser(user);
+		if (
+			user ===
+			"Error Code=auth/wrong-password, Error Message=Firebase: Error (auth/wrong-password)."
+		)
+			alert("Wrong Password or email");
+		else {
+			setFormFields({ email: "", password: "" });
+		}
 	};
 
 	return (
