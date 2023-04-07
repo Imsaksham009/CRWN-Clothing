@@ -56,7 +56,7 @@ export const signInWithEmail = async (email, password) => {
 };
 
 
-export const createUser = async (user, dispName = "") => {
+export const createUser = async (user, add = {}) => {
     const docRefFromAuth = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRefFromAuth);
     if (docSnap.exists()) {
@@ -67,11 +67,10 @@ export const createUser = async (user, dispName = "") => {
         await setDoc(docRefFromAuth, {
             displayName,
             email,
-            createdAt
+            createdAt,
+            ...add
         });
-        if (!displayName) {
-            await updateDoc(docRefFromAuth, { displayName: dispName });
-        }
+
     }
     return docRefFromAuth;
 };

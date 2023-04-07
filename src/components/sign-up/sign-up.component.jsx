@@ -25,7 +25,7 @@ const SignUp = () => {
 			return;
 		}
 		const { user } = await signUpWithEmail(email, password);
-		await createUser(user, displayName);
+		await createUser(user, { displayName });
 		setFormFields({
 			displayName: "",
 			email: "",
