@@ -2,7 +2,7 @@ import { Route, createBrowserRouter, createRoutesFromElements } from "react-rout
 import ErrorPage from "./Routes/Error/error.component";
 import Home from "./Routes/home/home.component";
 import Navigation from "./Routes/Navigation/navigation.component";
-import SignIn from "./Routes/Auth/sign-in.component";
+import Auth from "./Routes/Auth/auth.components";
 
 
 const App = createBrowserRouter(
@@ -11,7 +11,7 @@ const App = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="shop" element={<h1>Shop Page</h1>} />
       {/* <Route path="about" element={<h1>About Page</h1>} /> */}
-      <Route path="signIn" element={<SignIn />} />
+      <Route path="signIn" element={<Auth />} />
 
 
     </Route>

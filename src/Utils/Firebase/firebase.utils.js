@@ -2,7 +2,11 @@ import { initializeApp } from "firebase/app";
 import {
     getAuth,
     signInWithPopup,
-    GoogleAuthProvider
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    updateCurrentUser,
+    updateProfile,
+    signInWithEmailAndPassword
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -29,10 +33,32 @@ export const googleSignInWithPopUp = () => {
     return signInWithPopup(auth, provider);
 };
 
+export const signUpUsingEmail = async (email, password, displayName) => {
+    try {
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+        const currentUser = auth.currentUser;
+        updateProfile(currentUser, { displayName });
+        return res;
+    } catch (e) {
+        if (e.code === "auth/email-already-in-use") {
+            alert("Email already in use with other profile.");
+            return null;
+        }
+    }
+};
 
-export const setUserFromAuth = async (authData) => {
+export const signInUsingEmail = async (email, password) => {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    return res;
+};
+
+
+export const setUserFromAuth = async (authData, otherData) => {
     const docRef = doc(db, "Users", authData.uid);
     const userSnap = await getDoc(docRef);
+    if (!authData.displayName) {
+        authData.displayName = otherData.displayName;
+    }
     try {
         if (!userSnap.exists()) {
             await setDoc(docRef, {
@@ -46,6 +72,5 @@ export const setUserFromAuth = async (authData) => {
     }
 
     return docRef;
-
 }
 
