@@ -6,7 +6,8 @@ import {
     createUserWithEmailAndPassword,
     updateCurrentUser,
     updateProfile,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    signOut
 } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -72,5 +73,8 @@ export const setUserFromAuth = async (authData, otherData) => {
     }
 
     return docRef;
-}
+};
 
+export const SignOutUser = async () => {
+    await signOut(auth);
+};

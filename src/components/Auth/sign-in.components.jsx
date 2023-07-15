@@ -3,7 +3,9 @@ import {
 	googleSignInWithPopUp,
 	setUserFromAuth,
 } from "../../Utils/Firebase/firebase.utils";
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { UserContext } from "../../context/user.context";
 
 import FormInput from "../Form-input/form-input.components";
 import Button from "../Button/button.components";
@@ -12,6 +14,7 @@ import "./signin.styles.scss";
 const SignIn = () => {
 	const [formfields, setFormFields] = useState({ email: "", password: "" });
 	const { email, password } = formfields;
+	const { setCurrentUser, currentUser } = useContext(UserContext);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -22,6 +25,7 @@ const SignIn = () => {
 		e.preventDefault();
 		try {
 			const res = await signInUsingEmail(email, password);
+			setCurrentUser(res.user);
 			alert(`Welcome back....${res.user.displayName}`);
 			return res;
 		} catch (e) {
@@ -34,6 +38,7 @@ const SignIn = () => {
 
 	const signINWithGooglePopUp = async () => {
 		const result = await googleSignInWithPopUp();
+		setCurrentUser(result.user);
 		const saveResult = await setUserFromAuth(result.user);
 	};
 	return (

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
 	setUserFromAuth,
 	signUpUsingEmail,
 } from "../../Utils/Firebase/firebase.utils";
 import FormInput from "../Form-input/form-input.components";
 import Button from "../Button/button.components";
+import { UserContext } from "../../context/user.context";
 import "./sign-up-form.scss";
 
 const formfield = {
@@ -15,6 +16,7 @@ const formfield = {
 };
 
 const SignUp = () => {
+	const { setCurrentUser } = useContext(UserContext);
 	const [formfields, setFormFields] = useState(formfield);
 	const { displayName, email, password, confirmPassword } = formfields;
 	const handleInputChange = (event) => {
@@ -26,10 +28,9 @@ const SignUp = () => {
 		e.preventDefault();
 		try {
 			if (password === confirmPassword) {
-				const res = await signUpUsingEmail(email, password, displayName);
-				console.log(res);
-				const saveData = await setUserFromAuth(res.user, { displayName });
-				console.log(saveData);
+				const { user } = await signUpUsingEmail(email, password, displayName);
+				setCurrentUser(user);
+				await setUserFromAuth(user, { displayName });
 			} else {
 				alert("Password does not match...Try Again");
 				password = "";

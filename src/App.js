@@ -10,7 +10,7 @@ const App = createBrowserRouter(
     <Route path="/" element={<Navigation />} errorElement={<ErrorPage />} >
       <Route index element={<Home />} />
       <Route path="shop" element={<h1>Shop Page</h1>} />
-      {/* <Route path="about" element={<h1>About Page</h1>} /> */}
+      <Route path="about" element={<h1>About Page</h1>} />
       <Route path="signIn" element={<Auth />} />
 
 
