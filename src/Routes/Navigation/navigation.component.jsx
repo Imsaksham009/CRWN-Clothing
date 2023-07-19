@@ -4,14 +4,18 @@ import { ReactComponent as CrownLogo } from "../../Assets/Crown Logo/crown.svg";
 import { useContext } from "react";
 import { UserContext } from "../../context/user.context";
 import { SignOutUser } from "../../Utils/Firebase/firebase.utils";
+import { CartDropDownContext } from "../../context/cart-dropdown";
+import Cart from "../../components/cart/cart";
+import CartDropDown from "../../components/cart/cart-dropdown";
 
 const Navigation = () => {
-	const { setCurrentUser, currentUser } = useContext(UserContext);
+	const { currentUser } = useContext(UserContext);
+
+	const { isOpen, setOpen } = useContext(CartDropDownContext);
 
 	const signOut = async () => {
 		try {
 			await SignOutUser();
-			setCurrentUser(null);
 			alert("Signed Out Successfullyyy....Come Back Later");
 		} catch (e) {
 			console.error(e);
@@ -42,7 +46,10 @@ const Navigation = () => {
 							SIGN OUT
 						</Link>
 					)}
+
+					<Cart />
 				</div>
+				{isOpen && <CartDropDown />}
 			</div>
 			<Outlet />
 		</>
